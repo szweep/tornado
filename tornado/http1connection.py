@@ -542,10 +542,10 @@ class HTTP1Connection(httputil.HTTPConnection):
                     "Response with code %d should not have body" % code)
             content_length = 0
 
-        if content_length is not None:
-            return self._read_fixed_body(content_length, delegate)
         if headers.get("Transfer-Encoding") == "chunked":
             return self._read_chunked_body(delegate)
+        if content_length is not None:
+            return self._read_fixed_body(content_length, delegate)
         if self.is_client:
             return self._read_body_until_close(delegate)
         return None
